@@ -22,7 +22,6 @@
 ;; public functions
 ;;
 (define-public (new-position
-  (max-fee-percentage uint)
   (stable-coin-amount uint)
   )
   (ok true)
