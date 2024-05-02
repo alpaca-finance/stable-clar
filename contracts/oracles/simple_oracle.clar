@@ -33,13 +33,16 @@
   (asset <ft>)
   (price uint)
   )
-  ;; #[allow(unchecked_data)]
-  (ok (map-set assets (contract-of asset) price))
+  (begin
+    (asserts! (is-eq (var-get feeder) tx-sender) ERR_FORBIDDEN)
+    ;; #[allow(unchecked_data)]
+    (ok (map-set assets (contract-of asset) price))
+  )
 )
 
 ;; read only functions
 ;;
-(define-read-only (get-asset-price
+(define-read-only (fetch-price
   (asset <ft>)
   )
   (match (map-get? assets (contract-of asset))
@@ -59,7 +62,7 @@
   (new-feeder principal)
   )
   (begin
-    (try! (asset-is-owner))
+    (try! (assert-is-owner))
     ;; #[allow(unchecked_data)]
     (var-set feeder new-feeder)
     (ok true)
@@ -70,7 +73,7 @@
   (new-owner principal)
   )
   (begin
-    (try! (asset-is-owner))
+    (try! (assert-is-owner))
     ;; #[allow(unchecked_data)]
     (var-set owner new-owner)
     (ok true)
@@ -79,6 +82,6 @@
 
 ;; private functions
 ;;
-(define-private (asset-is-owner)
+(define-private (assert-is-owner)
   (ok (asserts! (is-eq (var-get owner) tx-sender) ERR_FORBIDDEN))
 )
