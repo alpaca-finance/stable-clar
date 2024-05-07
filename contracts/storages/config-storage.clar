@@ -22,6 +22,7 @@
 (define-data-var vault-storage principal tx-sender)
 (define-data-var oracle principal tx-sender)
 (define-data-var collateral principal tx-sender)
+(define-data-var min-debt uint u100000000000)
 
 (define-data-var is-initialized bool false)
 
@@ -64,7 +65,8 @@
     (ok {
       oracle: (var-get oracle),
       vault-storage: (var-get vault-storage),
-      collateral: (var-get collateral)
+      collateral: (var-get collateral),
+      min-debt: (var-get min-debt)
     })
   )
 )
@@ -78,6 +80,28 @@
     (try! (assert-is-owner))
     ;; #[allow(unchecked_data)]
     (var-set oracle new-oracle)
+    (ok true)
+  )
+)
+
+(define-public (set-vault-storage
+  (new-vault-storage principal)
+  )
+  (begin
+    (try! (assert-is-owner))
+    ;; #[allow(unchecked_data)]
+    (var-set vault-storage new-vault-storage)
+    (ok true)
+  )
+)
+
+(define-public (set-min-debt
+  (new-min-debt uint)
+  )
+  (begin
+    (try! (assert-is-owner))
+    ;; #[allow(unchecked_data)]
+    (var-set min-debt new-min-debt)
     (ok true)
   )
 )

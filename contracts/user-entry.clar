@@ -20,6 +20,7 @@
 (define-constant ERR_BAD_COLLATERAL (err u1003))
 (define-constant ERR_VAULT_ALREADY_EXISTS (err u1004))
 (define-constant ERR_GET_CONFIGS (err u1005))
+(define-constant ERR_DEBT_TOO_SMALL (err u1006))
 
 ;; data vars
 ;;
@@ -34,7 +35,7 @@
   (vault-storage <vault-storage-trait>)
   (collateral <ft>)
   (collateral-amount uint)
-  (stable-coin-amount uint)
+  (stablecoin-amount uint)
   )
   (let
     (
@@ -49,12 +50,13 @@
         (vault-data (try! (contract-call? vault-storage get-vault tx-sender)))
       )
       (asserts! (not (is-eq (get status vault-data) u1)) ERR_VAULT_ALREADY_EXISTS)
+      (asserts! (>= stablecoin-amount (get min-debt configs)) ERR_DEBT_TOO_SMALL)
       ;; set vault status
       (try! (contract-call? vault-storage set-vault-status tx-sender u1))
       ;; increase collateral
       (try! (contract-call? vault-storage increase-collateral tx-sender collateral-amount))
       ;; increase debt
-      (try! (contract-call? vault-storage increase-debt tx-sender stable-coin-amount))
+      (try! (contract-call? vault-storage increase-debt tx-sender stablecoin-amount))
     )
     (ok true)
   )

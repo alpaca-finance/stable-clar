@@ -123,16 +123,16 @@ describe("user entry tests", () => {
             simpleOracleAsDeployer.getContractPrincipal(),
             vaultStorageAsDeployer.getContractPrincipal(),
             sBTC_PRINCIPAL,
-            100,
-            100
+            100000000,
+            200000000000
           )
         ).toBeOk(Cl.bool(true));
 
         expect(vaultStorageAsDeployer.getVault(alice)).toBeOk(
           Cl.tuple({
             arrayIndex: Cl.uint(0),
-            collateral: Cl.uint(100),
-            debt: Cl.uint(100),
+            collateral: Cl.uint(100000000),
+            debt: Cl.uint(200000000000),
             status: Cl.uint(1),
           })
         );
