@@ -23,6 +23,21 @@ path = 'contracts/traits/oracle-trait.clar'
 clarity_version = 2
 epoch = 2.4
 
+[contracts.simple_oracle]
+path = 'contracts/oracles/simple_oracle.clar'
+clarity_version = 2
+epoch = 2.4
+
+[contracts.ownable-trait]
+path = 'contracts/traits/ownable-trait.clar'
+clarity_version = 2
+epoch = 2.4
+
+[contracts.sbtc]
+path = 'contracts/mocks/sbtc.clar'
+clarity_version = 2
+epoch = 2.4
+
 [repl.analysis.check_checker]
 strict = false
 trusted_sender = false

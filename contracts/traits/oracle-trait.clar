@@ -2,7 +2,7 @@
 
 (define-trait oracle-trait
 	(
-    (get-asset-price (<ft>) (response uint uint))
+    (fetch-price (<ft>) (response uint uint))
 	)
 )
 
