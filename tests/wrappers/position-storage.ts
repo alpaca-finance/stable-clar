@@ -1,7 +1,7 @@
 import { Simnet } from "@hirosystems/clarinet-sdk";
 import { Cl, ClarityValue } from "@stacks/transactions";
 
-export class PositionStorageWrapper {
+export class PositionStorageWrapper implements WrapperInterface {
   simnet: Simnet;
   deployerAddress: string;
   contractName: string = "position-storage";
@@ -11,6 +11,10 @@ export class PositionStorageWrapper {
     this.simnet = simnet;
     this.deployerAddress = deployerAddress;
     this.caller = caller;
+  }
+
+  getContractPrincipal(): string {
+    return `${this.deployerAddress}.${this.contractName}`;
   }
 
   setAllowCaller(callerPrincipal: string, isAllow: boolean): ClarityValue {

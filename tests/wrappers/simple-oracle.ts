@@ -1,7 +1,7 @@
 import { Simnet } from "@hirosystems/clarinet-sdk";
 import { Cl, ClarityValue } from "@stacks/transactions";
 
-export class SimpleOracleWrapper {
+export class SimpleOracleWrapper implements WrapperInterface {
   simnet: Simnet;
   deployerAddress: string;
   contractName: string = "simple-oracle";
@@ -11,6 +11,10 @@ export class SimpleOracleWrapper {
     this.simnet = simnet;
     this.deployerAddress = deployerAddress;
     this.caller = caller;
+  }
+
+  getContractPrincipal(): string {
+    return `${this.deployerAddress}.${this.contractName}`;
   }
 
   setFeeder(feederPrincipal: string): ClarityValue {

@@ -1,0 +1,3 @@
+interface WrapperInterface {
+  getContractPrincipal(): string;
+}
