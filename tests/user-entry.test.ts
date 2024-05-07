@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { SimpleOracleWrapper } from "./wrappers/simple-oracle";
-import { PositionStorageWrapper } from "./wrappers/position-storage";
+import { VaultStorageWrapper } from "./wrappers/vault-storage";
 import { UserEntryWrapper } from "./wrappers/user-entry";
 import { Cl } from "@stacks/transactions";
 import { ConfigStorageWrapper } from "./wrappers/config-storage";
@@ -19,7 +19,7 @@ describe("user entry tests", () => {
 
   let configStorageAsDeployer: ConfigStorageWrapper;
 
-  let positionStorageAsDeployer: PositionStorageWrapper;
+  let vaultStorageAsDeployer: VaultStorageWrapper;
 
   let userEntryAsAlice: UserEntryWrapper;
 
@@ -46,7 +46,7 @@ describe("user entry tests", () => {
       deployer
     );
 
-    positionStorageAsDeployer = new PositionStorageWrapper(
+    vaultStorageAsDeployer = new VaultStorageWrapper(
       simnet,
       deployer,
       deployer
@@ -55,7 +55,7 @@ describe("user entry tests", () => {
     userEntryAsAlice = new UserEntryWrapper(simnet, deployer, alice);
 
     expect(
-      positionStorageAsDeployer.setAllowCaller(
+      vaultStorageAsDeployer.setAllowCaller(
         userEntryAsAlice.getContractPrincipal(),
         true
       )
@@ -63,7 +63,7 @@ describe("user entry tests", () => {
     expect(
       configStorageAsDeployer.initialize(
         simpleOracleAsDeployer.getContractPrincipal(),
-        positionStorageAsDeployer.getContractPrincipal(),
+        vaultStorageAsDeployer.getContractPrincipal(),
         sBTC_PRINCIPAL
       )
     ).toBeOk(Cl.bool(true));
@@ -71,14 +71,14 @@ describe("user entry tests", () => {
     simpleOracleAsFeeder.setPrice(sBTC_PRINCIPAL, String(200 * 1e8));
   });
 
-  describe("when new position", () => {
+  describe("when new vault", () => {
     describe("when injected incorrect dependency", () => {
       describe("when injected fake oracle", () => {
         it("should error", async () => {
           expect(
-            userEntryAsAlice.newPosition(
+            userEntryAsAlice.newVault(
               `${deployer}.fake-simple-oracle`,
-              positionStorageAsDeployer.getContractPrincipal(),
+              vaultStorageAsDeployer.getContractPrincipal(),
               sBTC_PRINCIPAL,
               100,
               100
@@ -87,12 +87,12 @@ describe("user entry tests", () => {
         });
       });
 
-      describe("when injected fake position storage", () => {
+      describe("when injected fake vault storage", () => {
         it("should error", async () => {
           expect(
-            userEntryAsAlice.newPosition(
+            userEntryAsAlice.newVault(
               simpleOracleAsDeployer.getContractPrincipal(),
-              `${deployer}.fake-position-storage`,
+              `${deployer}.fake-vault-storage`,
               sBTC_PRINCIPAL,
               100,
               100
@@ -104,9 +104,9 @@ describe("user entry tests", () => {
       describe("when injected fake collateral", () => {
         it("should error", async () => {
           expect(
-            userEntryAsAlice.newPosition(
+            userEntryAsAlice.newVault(
               simpleOracleAsDeployer.getContractPrincipal(),
-              positionStorageAsDeployer.getContractPrincipal(),
+              vaultStorageAsDeployer.getContractPrincipal(),
               `${deployer}.fake-sbtc`,
               100,
               100
@@ -117,18 +117,18 @@ describe("user entry tests", () => {
     });
 
     describe("when injected correct dependency", () => {
-      it("should create new position", async () => {
+      it("should create new vault", async () => {
         expect(
-          userEntryAsAlice.newPosition(
+          userEntryAsAlice.newVault(
             simpleOracleAsDeployer.getContractPrincipal(),
-            positionStorageAsDeployer.getContractPrincipal(),
+            vaultStorageAsDeployer.getContractPrincipal(),
             sBTC_PRINCIPAL,
             100,
             100
           )
         ).toBeOk(Cl.bool(true));
 
-        expect(positionStorageAsDeployer.getPosition(alice)).toBeOk(
+        expect(vaultStorageAsDeployer.getVault(alice)).toBeOk(
           Cl.tuple({
             arrayIndex: Cl.uint(0),
             collateral: Cl.uint(100),

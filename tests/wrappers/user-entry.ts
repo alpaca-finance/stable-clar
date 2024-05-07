@@ -17,19 +17,19 @@ export class UserEntryWrapper implements WrapperInterface {
     return `${this.deployerAddress}.${this.contractName}`;
   }
 
-  newPosition(
+  newVault(
     oraclePrincipal: string,
-    positionStoragePrincipal: string,
+    vaultStoragePrincipal: string,
     collateralPrincipal: string,
     collateralAmount: number,
     stablecoinAmount: number
   ) {
     return this.simnet.callPublicFn(
       this.contractName,
-      "new-position",
+      "new-vault",
       [
         Cl.principal(oraclePrincipal),
-        Cl.principal(positionStoragePrincipal),
+        Cl.principal(vaultStoragePrincipal),
         Cl.principal(collateralPrincipal),
         Cl.uint(collateralAmount),
         Cl.uint(stablecoinAmount),

@@ -13,14 +13,13 @@
 
 ;; constants
 ;;
-(define-constant ERR_INVALID_POSITION (err u401))
 (define-constant ERR_FORBIDDEN (err u403))
 (define-constant ERR_NOT_INITIALIZED (err u501))
 
 ;; data vars
 ;;
 (define-data-var owner principal tx-sender)
-(define-data-var position-storage principal tx-sender)
+(define-data-var vault-storage principal tx-sender)
 (define-data-var oracle principal tx-sender)
 (define-data-var collateral principal tx-sender)
 
@@ -32,14 +31,14 @@
 ;; initialize function
 (define-public (initialize
   (init-oracle principal)
-  (init-position-storage principal)
+  (init-vault-storage principal)
   (init-collateral principal)
   )
   (begin
     ;; #[allow(unchecked_data)]
     (var-set oracle init-oracle)
     ;; #[allow(unchecked_data)]
-    (var-set position-storage init-position-storage)
+    (var-set vault-storage init-vault-storage)
     ;; #[allow(unchecked_data)]
     (var-set collateral init-collateral)
     (var-set is-initialized true)
@@ -64,7 +63,7 @@
     (asserts! (var-get is-initialized) ERR_NOT_INITIALIZED)
     (ok {
       oracle: (var-get oracle),
-      position-storage: (var-get position-storage),
+      vault-storage: (var-get vault-storage),
       collateral: (var-get collateral)
     })
   )

@@ -1,13 +1,13 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { PositionStorageWrapper } from "./wrappers/position-storage";
+import { VaultStorageWrapper } from "./wrappers/vault-storage";
 import { Cl } from "@stacks/transactions";
 
-describe("position storage tests", () => {
+describe("vault storage tests", () => {
   const accounts = simnet.getAccounts();
 
-  let positionStorageAsDeployer: PositionStorageWrapper;
-  let positionStorageAsAllowedCaller: PositionStorageWrapper;
-  let positionStorageAsAlice: PositionStorageWrapper;
+  let vaultStorageAsDeployer: VaultStorageWrapper;
+  let vaultStorageAsAllowedCaller: VaultStorageWrapper;
+  let vaultStorageAsAlice: VaultStorageWrapper;
 
   let deployer: string;
   let allowedCaller: string;
@@ -18,60 +18,53 @@ describe("position storage tests", () => {
     allowedCaller = accounts.get("wallet_1")!;
     alice = accounts.get("wallet_2")!;
 
-    positionStorageAsDeployer = new PositionStorageWrapper(
+    vaultStorageAsDeployer = new VaultStorageWrapper(
       simnet,
       deployer,
       deployer
     );
-    positionStorageAsAllowedCaller = new PositionStorageWrapper(
+    vaultStorageAsAllowedCaller = new VaultStorageWrapper(
       simnet,
       deployer,
       allowedCaller
     );
-    positionStorageAsAlice = new PositionStorageWrapper(
-      simnet,
-      deployer,
-      alice
-    );
+    vaultStorageAsAlice = new VaultStorageWrapper(simnet, deployer, alice);
 
-    positionStorageAsDeployer.setAllowCaller(allowedCaller, true);
+    vaultStorageAsDeployer.setAllowCaller(allowedCaller, true);
   });
 
   describe("when call set-allow-caller", () => {
     describe("when caller is not an owner", () => {
       it("should error", async () => {
-        expect(
-          positionStorageAsAlice.setAllowCaller(allowedCaller, true)
-        ).toBeErr(Cl.uint(403));
+        expect(vaultStorageAsAlice.setAllowCaller(allowedCaller, true)).toBeErr(
+          Cl.uint(403)
+        );
       });
     });
 
     describe("when caller is an owner", () => {
       it("should set allow caller", async () => {
-        positionStorageAsDeployer.setAllowCaller(
-          accounts.get("wallet_3")!,
-          true
-        );
+        vaultStorageAsDeployer.setAllowCaller(accounts.get("wallet_3")!, true);
         expect(
-          positionStorageAsAlice.isAllowCaller(accounts.get("wallet_3")!)
+          vaultStorageAsAlice.isAllowCaller(accounts.get("wallet_3")!)
         ).toBeOk(Cl.bool(true));
       });
     });
   });
 
-  describe("when call set-position-status", () => {
+  describe("when call set-vault-status", () => {
     describe("when caller is not an allowed caller", () => {
       it("should error", async () => {
-        expect(positionStorageAsAlice.setPositionStatus(alice, 1)).toBeErr(
+        expect(vaultStorageAsAlice.setVaultStatus(alice, 1)).toBeErr(
           Cl.uint(403)
         );
       });
     });
 
     describe("when caller is an allowed caller", () => {
-      it("should set position status", async () => {
-        positionStorageAsAllowedCaller.setPositionStatus(alice, 1);
-        expect(positionStorageAsAlice.getPosition(alice)).toBeOk(
+      it("should set vault status", async () => {
+        vaultStorageAsAllowedCaller.setVaultStatus(alice, 1);
+        expect(vaultStorageAsAlice.getVault(alice)).toBeOk(
           Cl.tuple({
             arrayIndex: Cl.uint(0),
             collateral: Cl.uint(0),
@@ -86,7 +79,7 @@ describe("position storage tests", () => {
   describe("when call increase-collateral", () => {
     describe("when caller is not an allowed caller", () => {
       it("should error", async () => {
-        expect(positionStorageAsAlice.increaseCollateral(alice, 100)).toBeErr(
+        expect(vaultStorageAsAlice.increaseCollateral(alice, 100)).toBeErr(
           Cl.uint(403)
         );
       });
@@ -95,9 +88,9 @@ describe("position storage tests", () => {
     describe("when caller is an allowed caller", () => {
       it("should increase collateral", async () => {
         expect(
-          positionStorageAsAllowedCaller.increaseCollateral(alice, 100)
+          vaultStorageAsAllowedCaller.increaseCollateral(alice, 100)
         ).toBeOk(Cl.bool(true));
-        expect(positionStorageAsAlice.getPosition(alice)).toBeOk(
+        expect(vaultStorageAsAlice.getVault(alice)).toBeOk(
           Cl.tuple({
             arrayIndex: Cl.uint(0),
             collateral: Cl.uint(100),
@@ -112,7 +105,7 @@ describe("position storage tests", () => {
   describe("when call increase-debt", () => {
     describe("when caller is not an allowed caller", () => {
       it("should error", async () => {
-        expect(positionStorageAsAlice.increaseDebt(alice, 100)).toBeErr(
+        expect(vaultStorageAsAlice.increaseDebt(alice, 100)).toBeErr(
           Cl.uint(403)
         );
       });
@@ -121,12 +114,12 @@ describe("position storage tests", () => {
     describe("when caller is an allowed caller", () => {
       it("should increase debt", async () => {
         expect(
-          positionStorageAsAllowedCaller.increaseCollateral(alice, 100)
+          vaultStorageAsAllowedCaller.increaseCollateral(alice, 100)
         ).toBeOk(Cl.bool(true));
-        expect(positionStorageAsAllowedCaller.increaseDebt(alice, 100)).toBeOk(
+        expect(vaultStorageAsAllowedCaller.increaseDebt(alice, 100)).toBeOk(
           Cl.bool(true)
         );
-        expect(positionStorageAsAlice.getPosition(alice)).toBeOk(
+        expect(vaultStorageAsAlice.getVault(alice)).toBeOk(
           Cl.tuple({
             arrayIndex: Cl.uint(0),
             collateral: Cl.uint(100),
