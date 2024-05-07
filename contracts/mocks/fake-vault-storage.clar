@@ -1,19 +1,20 @@
 
-;; title: position-storge.clar
+;; title: vault-storge.clar
 ;; version:
-;; summary: position storage contract
+;; summary: vault storage contract
 ;; description:
 
 ;; traits
 ;;
 (impl-trait .ownable-trait.ownable-trait)
+(impl-trait .vault-storage-trait.vault-storage-trait)
 
 ;; token definitions
 ;;
 
 ;; constants
 ;;
-(define-constant ERR_INVALID_POSITION (err u401))
+(define-constant ERR_INVALID_VAULT (err u401))
 (define-constant ERR_FORBIDDEN (err u403))
 
 ;; data vars
@@ -29,7 +30,7 @@
 ;; 2: Closed by owner
 ;; 3: Closed by liquidation
 ;; 4: Closed by redemption
-(define-map positions principal 
+(define-map vaults principal 
   {
     debt: uint,
     collateral: uint,
@@ -40,18 +41,18 @@
 
 ;; public functions
 ;;
-(define-public (set-position-status
+(define-public (set-vault-status
   (borrower principal)
   (status uint)
   )
   (let
     (
-      (pos (unwrap! (get-position borrower) ERR_INVALID_POSITION))
+      (pos (unwrap! (get-vault borrower) ERR_INVALID_VAULT))
       (data { debt: (get debt pos), collateral: (get collateral pos), status: status, arrayIndex: (get arrayIndex pos) })
     )
     (try! (assert-is-allowed-caller contract-caller))
     ;; #[allow(unchecked_data)]
-    (map-set positions borrower data)
+    (map-set vaults borrower data)
     (ok true)
   )
 )
@@ -62,12 +63,12 @@
   )
   (let
     (
-      (pos (unwrap! (get-position who) ERR_INVALID_POSITION))
+      (pos (unwrap! (get-vault who) ERR_INVALID_VAULT))
       (data { debt: (get debt pos), collateral: (+ (get collateral pos) amount), status: (get status pos), arrayIndex: (get arrayIndex pos) })
     )
     (try! (assert-is-allowed-caller contract-caller))
     ;; #[allow(unchecked_data)]
-    (map-set positions who data)
+    (map-set vaults who data)
     (ok true)
   )
 )
@@ -78,12 +79,12 @@
   )
   (let
     (
-      (pos (unwrap! (get-position who) ERR_INVALID_POSITION))
+      (pos (unwrap! (get-vault who) ERR_INVALID_VAULT))
       (data { debt: (+ (get debt pos) amount), collateral: (get collateral pos), status: (get status pos), arrayIndex: (get arrayIndex pos) })
     )
     (try! (assert-is-allowed-caller contract-caller))
     ;; #[allow(unchecked_data)]
-    (map-set positions who data)
+    (map-set vaults who data)
     (ok true)
   )
 )
@@ -95,10 +96,10 @@
   (ok (var-get owner))
 )
 
-(define-read-only (get-position
+(define-read-only (get-vault
   (borrower principal)
   )
-  (ok (default-to { debt: u0, collateral: u0, status: u0, arrayIndex: u0 } (map-get? positions borrower))
+  (ok (default-to { debt: u0, collateral: u0, status: u0, arrayIndex: u0 } (map-get? vaults borrower))
   )
 )
 

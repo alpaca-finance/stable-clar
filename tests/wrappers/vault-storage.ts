@@ -1,16 +1,20 @@
 import { Simnet } from "@hirosystems/clarinet-sdk";
 import { Cl, ClarityValue } from "@stacks/transactions";
 
-export class PositionStorageWrapper {
+export class VaultStorageWrapper implements WrapperInterface {
   simnet: Simnet;
   deployerAddress: string;
-  contractName: string = "position-storage";
+  contractName: string = "vault-storage";
   caller: string;
 
   constructor(simnet: Simnet, deployerAddress: string, caller: string) {
     this.simnet = simnet;
     this.deployerAddress = deployerAddress;
     this.caller = caller;
+  }
+
+  getContractPrincipal(): string {
+    return `${this.deployerAddress}.${this.contractName}`;
   }
 
   setAllowCaller(callerPrincipal: string, isAllow: boolean): ClarityValue {
@@ -31,19 +35,19 @@ export class PositionStorageWrapper {
     ).result;
   }
 
-  setPositionStatus(borrower: string, status: number): ClarityValue {
+  setVaultStatus(borrower: string, status: number): ClarityValue {
     return this.simnet.callPublicFn(
       this.contractName,
-      "set-position-status",
+      "set-vault-status",
       [Cl.principal(borrower), Cl.uint(status)],
       this.caller
     ).result;
   }
 
-  getPosition(borrower: string): ClarityValue {
+  getVault(borrower: string): ClarityValue {
     return this.simnet.callReadOnlyFn(
       this.contractName,
-      "get-position",
+      "get-vault",
       [Cl.principal(borrower)],
       this.caller
     ).result;

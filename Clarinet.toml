@@ -23,13 +23,33 @@ path = 'contracts/traits/oracle-trait.clar'
 clarity_version = 2
 epoch = 2.4
 
+[contracts.vault-storage-trait]
+path = 'contracts/traits/vault-storage-trait.clar'
+clarity_version = 2
+epoch = 2.4
+
+[contracts.stablecoin-trait]
+path = 'contracts/traits/stablecoin-trait.clar'
+clarity_version = 2
+epoch = 2.4
+
 [contracts.simple-oracle]
 path = 'contracts/oracles/simple-oracle.clar'
 clarity_version = 2
 epoch = 2.4
 
-[contracts.position-storage]
-path = 'contracts/storages/position-storage.clar'
+[contracts.vault-storage]
+path = 'contracts/storages/vault-storage.clar'
+clarity_version = 2
+epoch = 2.4
+
+[contracts.config-storage]
+path = 'contracts/storages/config-storage.clar'
+clarity_version = 2
+epoch = 2.4
+
+[contracts.stablecoin]
+path = 'contracts/stablecoin.clar'
 clarity_version = 2
 epoch = 2.4
 
@@ -40,6 +60,21 @@ epoch = 2.4
 
 [contracts.sbtc]
 path = 'contracts/mocks/sbtc.clar'
+clarity_version = 2
+epoch = 2.4
+
+[contracts.fake-simple-oracle]
+path = 'contracts/mocks/fake-simple-oracle.clar'
+clarity_version = 2
+epoch = 2.4
+
+[contracts.fake-vault-storage]
+path = 'contracts/mocks/fake-vault-storage.clar'
+clarity_version = 2
+epoch = 2.4
+
+[contracts.fake-sbtc]
+path = 'contracts/mocks/fake-sbtc.clar'
 clarity_version = 2
 epoch = 2.4
 
