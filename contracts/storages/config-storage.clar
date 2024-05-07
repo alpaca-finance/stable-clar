@@ -23,6 +23,7 @@
 (define-data-var oracle principal tx-sender)
 (define-data-var collateral principal tx-sender)
 (define-data-var min-debt uint u100000000000)
+(define-data-var stablecoin principal tx-sender)
 
 (define-data-var is-initialized bool false)
 
@@ -34,6 +35,7 @@
   (init-oracle principal)
   (init-vault-storage principal)
   (init-collateral principal)
+  (init-stablecoin principal)
   )
   (begin
     ;; #[allow(unchecked_data)]
@@ -42,6 +44,8 @@
     (var-set vault-storage init-vault-storage)
     ;; #[allow(unchecked_data)]
     (var-set collateral init-collateral)
+    ;; #[allow(unchecked_data)]
+    (var-set stablecoin init-stablecoin)
     (var-set is-initialized true)
     (ok true)
   )
@@ -66,7 +70,8 @@
       oracle: (var-get oracle),
       vault-storage: (var-get vault-storage),
       collateral: (var-get collateral),
-      min-debt: (var-get min-debt)
+      min-debt: (var-get min-debt),
+      stablecoin: (var-get stablecoin)
     })
   )
 )

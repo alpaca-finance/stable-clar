@@ -1,10 +1,10 @@
 import { Simnet } from "@hirosystems/clarinet-sdk";
 import { Cl, ClarityValue } from "@stacks/transactions";
 
-export class ConfigStorageWrapper implements WrapperInterface {
+export class StablecoinWrapper {
   simnet: Simnet;
   deployerAddress: string;
-  contractName: string = "config-storage";
+  contractName: string = "stablecoin";
   caller: string;
 
   constructor(simnet: Simnet, deployerAddress: string, caller: string) {
@@ -17,21 +17,11 @@ export class ConfigStorageWrapper implements WrapperInterface {
     return `${this.deployerAddress}.${this.contractName}`;
   }
 
-  initialize(
-    oraclePrincipal: string,
-    vaultStoragePrincipal: string,
-    collateralPrincipal: string,
-    stablecoinPrincipal: string
-  ): ClarityValue {
-    return simnet.callPublicFn(
+  setMinter(minterPrincipal: string, isAllow: boolean): ClarityValue {
+    return this.simnet.callPublicFn(
       this.contractName,
-      "initialize",
-      [
-        Cl.principal(oraclePrincipal),
-        Cl.principal(vaultStoragePrincipal),
-        Cl.principal(collateralPrincipal),
-        Cl.principal(stablecoinPrincipal),
-      ],
+      "set-minter",
+      [Cl.principal(minterPrincipal), Cl.bool(isAllow)],
       this.caller
     ).result;
   }

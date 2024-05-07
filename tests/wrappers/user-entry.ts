@@ -21,6 +21,7 @@ export class UserEntryWrapper implements WrapperInterface {
     oraclePrincipal: string,
     vaultStoragePrincipal: string,
     collateralPrincipal: string,
+    stablecoinPrincipal: string,
     collateralAmount: number,
     stablecoinAmount: number
   ) {
@@ -31,6 +32,7 @@ export class UserEntryWrapper implements WrapperInterface {
         Cl.principal(oraclePrincipal),
         Cl.principal(vaultStoragePrincipal),
         Cl.principal(collateralPrincipal),
+        Cl.principal(stablecoinPrincipal),
         Cl.uint(collateralAmount),
         Cl.uint(stablecoinAmount),
       ],

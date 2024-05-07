@@ -8,6 +8,7 @@
 ;;
 (use-trait oracle-trait .oracle-trait.oracle-trait)
 (use-trait vault-storage-trait .vault-storage-trait.vault-storage-trait)
+(use-trait stablecoin-trait .stablecoin-trait.stablecoin-trait)
 (use-trait ft .ft-trait.ft-trait)
 
 ;; token definitions
@@ -21,6 +22,7 @@
 (define-constant ERR_VAULT_ALREADY_EXISTS (err u1004))
 (define-constant ERR_GET_CONFIGS (err u1005))
 (define-constant ERR_DEBT_TOO_SMALL (err u1006))
+(define-constant ERR_BAD_STABLECOIN (err u1007))
 
 ;; data vars
 ;;
@@ -34,6 +36,7 @@
   (oracle <oracle-trait>)
   (vault-storage <vault-storage-trait>)
   (collateral <ft>)
+  (stablecoin <stablecoin-trait>)
   (collateral-amount uint)
   (stablecoin-amount uint)
   )
@@ -44,6 +47,7 @@
     (asserts! (is-eq (contract-of oracle) (get oracle configs)) ERR_BAD_ORACLE)
     (asserts! (is-eq (contract-of vault-storage) (get vault-storage configs)) ERR_BAD_VAULT_STORAGE)
     (asserts! (is-eq (contract-of collateral) (get collateral configs)) ERR_BAD_COLLATERAL)
+    (asserts! (is-eq (contract-of stablecoin) (get stablecoin configs)) ERR_BAD_STABLECOIN)
     (let
       (
         (price (try! (contract-call? oracle fetch-price collateral)))
@@ -57,6 +61,8 @@
       (try! (contract-call? vault-storage increase-collateral tx-sender collateral-amount))
       ;; increase debt
       (try! (contract-call? vault-storage increase-debt tx-sender stablecoin-amount))
+      ;; mint stablecoin to user
+      (try! (contract-call? stablecoin mint tx-sender stablecoin-amount))
     )
     (ok true)
   )
