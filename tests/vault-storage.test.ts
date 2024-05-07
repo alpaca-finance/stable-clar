@@ -37,7 +37,7 @@ describe("vault storage tests", () => {
     describe("when caller is not an owner", () => {
       it("should error", async () => {
         expect(vaultStorageAsAlice.setAllowCaller(allowedCaller, true)).toBeErr(
-          Cl.uint(403)
+          Cl.uint(2002)
         );
       });
     });
@@ -56,7 +56,7 @@ describe("vault storage tests", () => {
     describe("when caller is not an allowed caller", () => {
       it("should error", async () => {
         expect(vaultStorageAsAlice.setVaultStatus(alice, 1)).toBeErr(
-          Cl.uint(403)
+          Cl.uint(2002)
         );
       });
     });
@@ -80,7 +80,7 @@ describe("vault storage tests", () => {
     describe("when caller is not an allowed caller", () => {
       it("should error", async () => {
         expect(vaultStorageAsAlice.increaseCollateral(alice, 100)).toBeErr(
-          Cl.uint(403)
+          Cl.uint(2002)
         );
       });
     });
@@ -106,7 +106,7 @@ describe("vault storage tests", () => {
     describe("when caller is not an allowed caller", () => {
       it("should error", async () => {
         expect(vaultStorageAsAlice.increaseDebt(alice, 100)).toBeErr(
-          Cl.uint(403)
+          Cl.uint(2002)
         );
       });
     });

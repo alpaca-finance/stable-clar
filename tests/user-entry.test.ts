@@ -83,7 +83,7 @@ describe("user entry tests", () => {
               100,
               100
             )
-          ).toBeErr(Cl.uint(401));
+          ).toBeErr(Cl.uint(1001));
         });
       });
 
@@ -97,7 +97,7 @@ describe("user entry tests", () => {
               100,
               100
             )
-          ).toBeErr(Cl.uint(402));
+          ).toBeErr(Cl.uint(1002));
         });
       });
 
@@ -111,7 +111,7 @@ describe("user entry tests", () => {
               100,
               100
             )
-          ).toBeErr(Cl.uint(403));
+          ).toBeErr(Cl.uint(1003));
         });
       });
     });

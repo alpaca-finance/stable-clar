@@ -14,8 +14,8 @@
 
 ;; constants
 ;;
-(define-constant ERR_INVALID_VAULT (err u401))
-(define-constant ERR_FORBIDDEN (err u403))
+(define-constant ERR_INVALID_VAULT (err u2001))
+(define-constant ERR_FORBIDDEN (err u2002))
 
 ;; data vars
 ;;

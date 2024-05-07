@@ -13,8 +13,8 @@
 
 ;; constants
 ;;
-(define-constant ERR_FORBIDDEN (err u403))
-(define-constant ERR_NOT_INITIALIZED (err u501))
+(define-constant ERR_FORBIDDEN (err u3001))
+(define-constant ERR_NOT_INITIALIZED (err u3002))
 
 ;; data vars
 ;;

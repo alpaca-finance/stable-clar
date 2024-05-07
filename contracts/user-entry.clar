@@ -15,10 +15,11 @@
 
 ;; constants
 ;;
-(define-constant ERR_BAD_ORACLE (err u401))
-(define-constant ERR_BAD_VAULT_STORAGE (err u402))
-(define-constant ERR_BAD_COLLATERAL (err u403))
-(define-constant ERR_GET_CONFIGS (err u501))
+(define-constant ERR_BAD_ORACLE (err u1001))
+(define-constant ERR_BAD_VAULT_STORAGE (err u1002))
+(define-constant ERR_BAD_COLLATERAL (err u1003))
+(define-constant ERR_VAULT_ALREADY_EXISTS (err u1004))
+(define-constant ERR_GET_CONFIGS (err u1005))
 
 ;; data vars
 ;;
@@ -45,7 +46,9 @@
     (let
       (
         (price (try! (contract-call? oracle fetch-price collateral)))
+        (vault-data (try! (contract-call? vault-storage get-vault tx-sender)))
       )
+      (asserts! (not (is-eq (get status vault-data) u1)) ERR_VAULT_ALREADY_EXISTS)
       ;; set vault status
       (try! (contract-call? vault-storage set-vault-status tx-sender u1))
       ;; increase collateral
