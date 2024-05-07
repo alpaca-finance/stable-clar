@@ -6,8 +6,8 @@ telemetry = false
 cache_dir = './.cache'
 requirements = []
 
-[contracts.user_entry]
-path = 'contracts/user_entry.clar'
+[contracts.user-entry]
+path = 'contracts/user-entry.clar'
 clarity_version = 2
 epoch = 2.4
 [repl.analysis]
@@ -23,13 +23,13 @@ path = 'contracts/traits/oracle-trait.clar'
 clarity_version = 2
 epoch = 2.4
 
-[contracts.simple_oracle]
-path = 'contracts/oracles/simple_oracle.clar'
+[contracts.simple-oracle]
+path = 'contracts/oracles/simple-oracle.clar'
 clarity_version = 2
 epoch = 2.4
 
-[contracts.position_storage]
-path = 'contracts/storages/position_storage.clar'
+[contracts.position-storage]
+path = 'contracts/storages/position-storage.clar'
 clarity_version = 2
 epoch = 2.4
 

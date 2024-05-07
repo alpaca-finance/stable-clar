@@ -4,7 +4,7 @@ import { Cl, ClarityValue } from "@stacks/transactions";
 export class SimpleOracleWrapper {
   simnet: Simnet;
   deployerAddress: string;
-  contractName: string = "simple_oracle";
+  contractName: string = "simple-oracle";
   caller: string;
 
   constructor(simnet: Simnet, deployerAddress: string, caller: string) {
