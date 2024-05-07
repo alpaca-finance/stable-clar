@@ -82,4 +82,59 @@ describe("position storage tests", () => {
       });
     });
   });
+
+  describe("when call increase-collateral", () => {
+    describe("when caller is not an allowed caller", () => {
+      it("should error", async () => {
+        expect(positionStorageAsAlice.increaseCollateral(alice, 100)).toBeErr(
+          Cl.uint(403)
+        );
+      });
+    });
+
+    describe("when caller is an allowed caller", () => {
+      it("should increase collateral", async () => {
+        expect(
+          positionStorageAsAllowedCaller.increaseCollateral(alice, 100)
+        ).toBeOk(Cl.bool(true));
+        expect(positionStorageAsAlice.getPosition(alice)).toBeOk(
+          Cl.tuple({
+            arrayIndex: Cl.uint(0),
+            collateral: Cl.uint(100),
+            debt: Cl.uint(0),
+            status: Cl.uint(0),
+          })
+        );
+      });
+    });
+  });
+
+  describe("when call increase-debt", () => {
+    describe("when caller is not an allowed caller", () => {
+      it("should error", async () => {
+        expect(positionStorageAsAlice.increaseDebt(alice, 100)).toBeErr(
+          Cl.uint(403)
+        );
+      });
+    });
+
+    describe("when caller is an allowed caller", () => {
+      it("should increase debt", async () => {
+        expect(
+          positionStorageAsAllowedCaller.increaseCollateral(alice, 100)
+        ).toBeOk(Cl.bool(true));
+        expect(positionStorageAsAllowedCaller.increaseDebt(alice, 100)).toBeOk(
+          Cl.bool(true)
+        );
+        expect(positionStorageAsAlice.getPosition(alice)).toBeOk(
+          Cl.tuple({
+            arrayIndex: Cl.uint(0),
+            collateral: Cl.uint(100),
+            debt: Cl.uint(100),
+            status: Cl.uint(0),
+          })
+        );
+      });
+    });
+  });
 });

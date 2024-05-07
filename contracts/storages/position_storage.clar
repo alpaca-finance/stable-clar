@@ -56,6 +56,37 @@
   )
 )
 
+(define-public (increase-collateral
+  (who principal)
+  (amount uint)
+  )
+  (let
+    (
+      (pos (unwrap! (get-position who) ERR_INVALID_POSITION))
+      (data { debt: (get debt pos), collateral: (+ (get collateral pos) amount), status: (get status pos), arrayIndex: (get arrayIndex pos) })
+    )
+    (try! (assert-is-allowed-caller contract-caller))
+    ;; #[allow(unchecked_data)]
+    (map-set positions who data)
+    (ok true)
+  )
+)
+
+(define-public (increase-debt
+  (who principal)
+  (amount uint)
+  )
+  (let
+    (
+      (pos (unwrap! (get-position who) ERR_INVALID_POSITION))
+      (data { debt: (+ (get debt pos) amount), collateral: (get collateral pos), status: (get status pos), arrayIndex: (get arrayIndex pos) })
+    )
+    (try! (assert-is-allowed-caller contract-caller))
+    ;; #[allow(unchecked_data)]
+    (map-set positions who data)
+    (ok true)
+  )
+)
 
 
 ;; read only functions

@@ -48,4 +48,22 @@ export class PositionStorageWrapper {
       this.caller
     ).result;
   }
+
+  increaseCollateral(who: string, amount: number): ClarityValue {
+    return this.simnet.callPublicFn(
+      this.contractName,
+      "increase-collateral",
+      [Cl.principal(who), Cl.uint(amount)],
+      this.caller
+    ).result;
+  }
+
+  increaseDebt(who: string, amount: number): ClarityValue {
+    return this.simnet.callPublicFn(
+      this.contractName,
+      "increase-debt",
+      [Cl.principal(who), Cl.uint(amount)],
+      this.caller
+    ).result;
+  }
 }
