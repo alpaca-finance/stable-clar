@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { PositionStorageWrapper } from "./wrappers/position_storage";
+import { PositionStorageWrapper } from "./wrappers/position-storage";
 import { Cl } from "@stacks/transactions";
 
 describe("position storage tests", () => {

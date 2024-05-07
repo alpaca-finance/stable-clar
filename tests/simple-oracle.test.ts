@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { SimpleOracleWrapper } from "./wrappers/simple_oracle";
+import { SimpleOracleWrapper } from "./wrappers/simple-oracle";
 import { sBTC_PRINCIPAL } from "./constants";
 import { Cl } from "@stacks/transactions";
 

@@ -4,7 +4,7 @@ import { Cl, ClarityValue } from "@stacks/transactions";
 export class PositionStorageWrapper {
   simnet: Simnet;
   deployerAddress: string;
-  contractName: string = "position_storage";
+  contractName: string = "position-storage";
   caller: string;
 
   constructor(simnet: Simnet, deployerAddress: string, caller: string) {
